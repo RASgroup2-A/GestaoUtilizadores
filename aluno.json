@@ -1,0 +1,28 @@
+[{
+    "_id": "a1",
+    "name": "aluno",
+    "numMecanografico": "a12345",
+    "email": "aluno1@example.com",
+    "password": "aluno12345"
+},
+{
+    "_id": "a2",
+    "name": "aluno",
+    "numMecanografico": "a12345",
+    "email": "aluno2@example.com",
+    "password": "aluno12345"
+},
+{
+    "_id": "a3",
+    "name": "aluno",
+    "numMecanografico": "a12346",
+    "email": "aluno3@example.com",
+    "password": "aluno12345"
+},
+{
+    "_id": "a4",
+    "name": "aluno",
+    "numMecanografico": "a12347",
+    "email": "aluno4@example.com",
+    "password": "aluno12345"
+}]
