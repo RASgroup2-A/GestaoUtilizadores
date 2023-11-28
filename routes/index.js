@@ -4,8 +4,7 @@ var router = express.Router();
 // Controller to the dbs
 var users = require('../controllers/users.js')
 
-var alunos = require('../models/alunos.js')
-var docentes = require('../models/docentes.js')
+var alunos_docentes = require('../models/alunos_docentes.js')
 var tecnicos = require('../models/tecnicos.js')
 
 /**

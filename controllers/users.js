@@ -3,8 +3,7 @@
  */
 
 // Model that makes the connection with the mongoDB database
-var alunos = require('../models/alunos.js')
-var docentes = require('../models/docentes.js')
+var alunos_docentes = require('../models/alunos_docentes.js')
 var tecnicos = require('../models/tecnicos.js')
 
 // Controller that provides functionality to connect with the algolia database
@@ -16,8 +15,8 @@ var tecnicos = require('../models/tecnicos.js')
  * @returns The students or an error
  */
 module.exports.listAlunos = () => {
-  return alunos
-          .find() // No filters
+  return alunos_docentes
+          .find({type: 'A'}) // No filters
           .then(resp => {
             return resp
           })
@@ -34,8 +33,8 @@ module.exports.listAlunos = () => {
  * @returns The student or an error
  */
 module.exports.getAluno = id => {
-  return alunos
-          .find({_id: id})
+  return alunos_docentes
+          .find({_id: id, type: 'A'})
           .then(resp => {
             return resp
           })
@@ -51,8 +50,8 @@ module.exports.getAluno = id => {
  * @returns The teachers or an error
  */
 module.exports.listDocentes = () => {
-    return alunos
-        .find() // No filters
+    return alunos_docentes
+        .find({type: 'D'}) // No filters
         .then(resp => {
             return resp
         })
@@ -69,8 +68,8 @@ module.exports.listDocentes = () => {
  * @returns The teacher or an error
  */
 module.exports.getDocente = id => {
-    return docentes
-        .find({_id: id})
+    return alunos_docentes
+        .find({_id: id, type: 'D'})
         .then(resp => {
             return resp
         })
@@ -122,8 +121,8 @@ module.exports.getTecnico = id => {
  * @returns the next id to be used
  */
 module.exports.getCurrentIdAluno = () => {
-  return alunos
-          .find({}, {_id: 1})
+  return alunos_docentes
+          .find({type: 'A'}, {_id: 1})
           .sort({_id: -1}) // Sort descending
           .limit(1) // Only the maximum
           .then(resp => {
@@ -147,8 +146,8 @@ module.exports.getCurrentIdAluno = () => {
  * @returns the next id to be used
  */
 module.exports.getCurrentIdDocente = () => {
-    return docentes
-        .find({}, {_id: 1})
+    return alunos_docentes
+        .find({type: 'D'}, {_id: 1})
         .sort({_id: -1}) // Sort descending
         .limit(1) // Only the maximum
         .then(resp => {
@@ -200,7 +199,7 @@ module.exports.getCurrentIdTecnico = () => {
  */
 
 module.exports.addAluno = aluno => {
-    return alunos
+    return alunos_docentes
         .create(aluno)
         .then(resp => {
             // Algolia.add(resp)
@@ -220,7 +219,7 @@ module.exports.addAluno = aluno => {
  */
 
 module.exports.addDocente = docente => {
-    return docentes
+    return alunos_docentes
         .create(docente)
         .then(resp => {
             // Algolia.add(resp)
@@ -261,8 +260,8 @@ module.exports.addTecnico = tecnico => {
  */
 
 module.exports.updateAluno = (aluno, id) => {
-    return alunos
-        .updateOne({_id: id}, aluno)
+    return alunos_docentes
+        .updateOne({_id: id, type: 'A'}, aluno)
         .then(resp => {
             // Algolia.update(resp)
             return resp
@@ -282,8 +281,8 @@ module.exports.updateAluno = (aluno, id) => {
  */
 
 module.exports.updateDocente = (docente, id) => {
-    return docentes
-        .updateOne({_id: id}, docente)
+    return alunos_docentes
+        .updateOne({_id: id, type: 'D'}, docente)
         .then(resp => {
             // Algolia.update(resp)
             return resp
@@ -323,8 +322,8 @@ module.exports.updateTecnico = (tecnico, id) => {
  */
 
 module.exports.deleteAluno = id => {
-    return alunos
-        .deleteOne({_id: id})
+    return alunos_docentes
+        .deleteOne({_id: id, type: 'A'})
         .then(resp => {
             // Algolia.remove(id)
             return resp
@@ -343,8 +342,8 @@ module.exports.deleteAluno = id => {
  */
 
 module.exports.deleteDocente = id => {
-    return docentes
-        .deleteOne({_id: id})
+    return alunos_docentes
+        .deleteOne({_id: id, type: 'D'})
         .then(resp => {
             // Algolia.remove(id)
             return resp
