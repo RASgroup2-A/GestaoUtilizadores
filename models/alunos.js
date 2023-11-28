@@ -2,6 +2,7 @@
 const mongoose = require('mongoose')
 
 var alunoSchema = new mongoose.Schema({
+    _id: Number,
     name: String,
     numMecanografico: String,
     email: String,
