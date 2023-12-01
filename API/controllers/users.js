@@ -3,8 +3,7 @@
  */
 
 // Model that makes the connection with the mongoDB database
-var alunos_docentes = require('../models/alunos_docentes.js')
-var tecnicos = require('../models/tecnicos.js')
+var users = require('../models/users.js')
 
 // Controller that provides functionality to connect with the algolia database
 // var Algolia = require('./algolia.js')
@@ -15,7 +14,7 @@ var tecnicos = require('../models/tecnicos.js')
  * @returns The students or an error
  */
 module.exports.listAlunos = () => {
-  return alunos_docentes
+  return users
           .find({type: 'A'}) // No filters
           .then(resp => {
             return resp
@@ -33,7 +32,7 @@ module.exports.listAlunos = () => {
  * @returns The student or an error
  */
 module.exports.getAluno = id => {
-  return alunos_docentes
+  return users
           .find({_id: id, type: 'A'})
           .then(resp => {
             return resp
@@ -50,8 +49,8 @@ module.exports.getAluno = id => {
  * @returns The teachers or an error
  */
 module.exports.listDocentes = () => {
-    return alunos_docentes
-        .find({type: 'D'}) // No filters
+    return users
+        .find({type: 'D'})
         .then(resp => {
             return resp
         })
@@ -68,7 +67,7 @@ module.exports.listDocentes = () => {
  * @returns The teacher or an error
  */
 module.exports.getDocente = id => {
-    return alunos_docentes
+    return users
         .find({_id: id, type: 'D'})
         .then(resp => {
             return resp
@@ -85,8 +84,8 @@ module.exports.getDocente = id => {
  * @returns The technicians or an error
  */
 module.exports.listTecnicos = () => {
-    return tecnicos
-        .find() // No filters
+    return users
+        .find({type: 'T'})
         .then(resp => {
             return resp
         })
@@ -105,8 +104,8 @@ module.exports.listTecnicos = () => {
  * @returns The technician or an error
  */
 module.exports.getTecnico = id => {
-    return tecnicos
-        .find({_id: id})
+    return users
+        .find({_id: id, type: 'T'})
         .then(resp => {
             return resp
         })
@@ -121,7 +120,7 @@ module.exports.getTecnico = id => {
  * @returns the next id to be used
  */
 module.exports.getCurrentIdAluno = () => {
-  return alunos_docentes
+  return users
           .find({type: 'A'}, {_id: 1})
           .sort({_id: -1}) // Sort descending
           .limit(1) // Only the maximum
@@ -146,7 +145,7 @@ module.exports.getCurrentIdAluno = () => {
  * @returns the next id to be used
  */
 module.exports.getCurrentIdDocente = () => {
-    return alunos_docentes
+    return users
         .find({type: 'D'}, {_id: 1})
         .sort({_id: -1}) // Sort descending
         .limit(1) // Only the maximum
@@ -172,8 +171,8 @@ module.exports.getCurrentIdDocente = () => {
  */
 
 module.exports.getCurrentIdTecnico = () => {
-    return tecnicos
-        .find({}, {_id: 1})
+    return users
+        .find({type:'T'}, {_id: 1})
         .sort({_id: -1}) // Sort descending
         .limit(1) // Only the maximum
         .then(resp => {
@@ -199,7 +198,7 @@ module.exports.getCurrentIdTecnico = () => {
  */
 
 module.exports.addAluno = aluno => {
-    return alunos_docentes
+    return users
         .create(aluno)
         .then(resp => {
             // Algolia.add(resp)
@@ -219,7 +218,7 @@ module.exports.addAluno = aluno => {
  */
 
 module.exports.addDocente = docente => {
-    return alunos_docentes
+    return users
         .create(docente)
         .then(resp => {
             // Algolia.add(resp)
@@ -239,7 +238,7 @@ module.exports.addDocente = docente => {
  */
 
 module.exports.addTecnico = tecnico => {
-    return tecnicos
+    return users
         .create(tecnico)
         .then(resp => {
             // Algolia.add(resp)
@@ -260,7 +259,7 @@ module.exports.addTecnico = tecnico => {
  */
 
 module.exports.updateAluno = (aluno, id) => {
-    return alunos_docentes
+    return users
         .updateOne({_id: id, type: 'A'}, aluno)
         .then(resp => {
             // Algolia.update(resp)
@@ -281,7 +280,7 @@ module.exports.updateAluno = (aluno, id) => {
  */
 
 module.exports.updateDocente = (docente, id) => {
-    return alunos_docentes
+    return users
         .updateOne({_id: id, type: 'D'}, docente)
         .then(resp => {
             // Algolia.update(resp)
@@ -302,8 +301,8 @@ module.exports.updateDocente = (docente, id) => {
  */
 
 module.exports.updateTecnico = (tecnico, id) => {
-    return tecnicos
-        .updateOne({_id: id}, tecnico)
+    return users
+        .updateOne({_id: id, type: 'T'}, tecnico)
         .then(resp => {
             // Algolia.update(resp)
             return resp
@@ -322,7 +321,7 @@ module.exports.updateTecnico = (tecnico, id) => {
  */
 
 module.exports.deleteAluno = id => {
-    return alunos_docentes
+    return users
         .deleteOne({_id: id, type: 'A'})
         .then(resp => {
             // Algolia.remove(id)
@@ -342,7 +341,7 @@ module.exports.deleteAluno = id => {
  */
 
 module.exports.deleteDocente = id => {
-    return alunos_docentes
+    return users
         .deleteOne({_id: id, type: 'D'})
         .then(resp => {
             // Algolia.remove(id)
@@ -362,8 +361,8 @@ module.exports.deleteDocente = id => {
  */
 
 module.exports.deleteTecnico = id => {
-    return tecnicos
-        .deleteOne({_id: id})
+    return users
+        .deleteOne({_id: id, type: 'T'})
         .then(resp => {
             // Algolia.remove(id)
             return resp

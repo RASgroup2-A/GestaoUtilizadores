@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-var alunodocenteSchema = new mongoose.Schema({
+var usersSchema = new mongoose.Schema({
     _id: Number,
     name: String,
     numMecanografico: String,
@@ -9,4 +9,4 @@ var alunodocenteSchema = new mongoose.Schema({
     type: String
 });
 
-module.exports  = mongoose.model('alunos_docentes', alunodocenteSchema)
+module.exports  = mongoose.model('users', usersSchema)
