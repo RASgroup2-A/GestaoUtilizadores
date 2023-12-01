@@ -1,0 +1,12 @@
+[ {
+  "_id": 1,
+  "numMecanografico": "t1",
+  "email": "tecnico@example.com",
+  "password": "tecnico123"
+  },
+  {
+    "_id": 2,
+    "numMecanografico": "t2",
+    "email": "tecnico@example.com",
+    "password": "tecnico123"
+  }]
