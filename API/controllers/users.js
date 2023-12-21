@@ -250,6 +250,16 @@ module.exports.addTecnico = tecnico => {
         })
 }
 
+module.exports.getUser = id => {
+    return users.findOne({ _id: id })
+        .then(resposta => {
+            return resposta
+        })
+        .catch(erro => {
+            return erro
+        })
+}
+
 /**
  * Update a student in the database
  * UPDATE
@@ -372,3 +382,54 @@ module.exports.deleteTecnico = id => {
             return error
         })
 }
+
+module.exports.deleteUser = id => {
+    return users.deleteOne({ _id: id })
+        .then(resposta => {
+            return resposta
+        })
+        .catch(erro => {
+            return erro
+        })
+}
+
+module.exports.updateUserPassword = (id, pwd) => {
+    return users.updateOne({ _id: id }, {password: pwd})
+        .then(resposta => {
+            return resposta
+        })
+        .catch(erro => {
+            return erro
+        })
+}
+
+module.exports.changePassword = (email, newPassword) => {
+    return users.findOne({ email: email })
+        .then(response => {
+            if (!response) {
+                return { error: "Email not in use" }
+            } else {
+                response.setPassword(newPassword, (err, user) => {
+                    if (err) {
+                        console.log(err.message)
+                        return err;
+                    } else {
+                        // Salve as alterações no utilizador
+                        response.save()
+                            .then(response => {
+                                return response
+                            })
+                            .catch(err => {
+                                console.log(err)
+                                return err;
+                            })
+                    }
+                });
+
+            }
+        })
+        .catch(err => {
+            return err;
+        })
+
+};

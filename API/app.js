@@ -1,6 +1,13 @@
+// Passport config
+var cookieParser = require('cookie-parser');
 var createError = require('http-errors');
 var express = require('express');
 var logger = require('morgan');
+var passport = require('passport')
+var LocalStrategy = require('passport-local').Strategy;
+var session = require('express-session');
+var User = require('./models/users');
+var usersRouter = require('./routes/index');
 
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://127.0.0.1/users';
@@ -11,15 +18,32 @@ db.on('open', function() {
     console.log("Conexão ao MongoDB realizada com sucesso...")
 })
 
-var indexRouter = require('./routes/index');
+// Passport config
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 var app = express();
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-app.use('/', indexRouter);
+app.use(cookieParser());
+app.use(passport.initialize());
+app.use(session({
+    secret: process.env.SESSION_KEY,
+    resave: false,
+    saveUninitialized: true
+}));
+app.use(passport.session());
+app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
