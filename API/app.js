@@ -11,7 +11,7 @@ var usersRouter = require('./routes/index');
 
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://127.0.0.1/users';
-mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(mongoDB, {});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error...'));
 db.on('open', function() {
@@ -38,7 +38,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(session({
-    secret: process.env.SESSION_KEY,
+    secret: require('crypto').randomBytes(64).toString('hex'),
     resave: false,
     saveUninitialized: true
 }));
