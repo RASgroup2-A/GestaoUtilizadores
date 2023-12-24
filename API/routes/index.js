@@ -7,8 +7,7 @@ const passport = require('passport')
 const users = require('../controllers/users.js');
 const usersModel = require('../models/users')
 const auth = require('../../API/auth/auth');
-
-require('dotenv').config();
+const {hash} = require("bcrypt");
 
 function paginatedResults(model) {
   return async (req, res, next) => {
@@ -80,11 +79,13 @@ router.post('/register', function (req, res) {
           res.status(500).jsonp({ error: 'Email already in use'});
 
         } else {
+
           usersModel.register(new usersModel({
-                name: req.body.name,
-                numMecanografico: req.body.numMecanografico,
-                email: req.body.email,
-                type: req.body.type
+                  username: req.body.username,
+                  name: req.body.name,
+                  numMecanografico: req.body.numMecanografico,
+                  email: req.body.email,
+                  type: req.body.type
               }),
               req.body.password,
               (err, user) => {
@@ -93,10 +94,10 @@ router.post('/register', function (req, res) {
                 else {
                   passport.authenticate("local")(req, res, () => {
                     jwt.sign({
-                          username: req.user.email, level: req.user.level,
-                          sub: 'New User', id: req.user._id
-                        },
-                        process.env.SECRET_KEY,
+                        username: req.user.username, type: req.user.type,
+                        sub: 'User registered', id: req.user._id
+                    },
+                        "8868c60edc94b3bfadbc4fa1e54f05902b8cd78b0eeb3e7fb67dfec0c86412ce",
                         { expiresIn: "1h" },
                         function (e, token) {
                           if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })
@@ -118,11 +119,11 @@ router.post('/register', function (req, res) {
  */
 router.post('/login', verifyActiveStatus, passport.authenticate('local'), function (req, res) {
   jwt.sign({
-        username: req.user.username, level: req.user.level,
+        username: req.user.username, type: req.user.type,
         sub: 'User logged in',
         id: req.user._id
       },
-      process.env.SECRET_KEY,
+      "8868c60edc94b3bfadbc4fa1e54f05902b8cd78b0eeb3e7fb67dfec0c86412ce",
       { expiresIn: "1h" },
       function (e, token) {
         if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })

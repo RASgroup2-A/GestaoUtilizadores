@@ -8,9 +8,10 @@ var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
 var User = require('./models/users');
 var usersRouter = require('./routes/index');
+require('dotenv').config();
 
 var mongoose = require('mongoose');
-var mongoDB = 'mongodb://127.0.0.1/users';
+var mongoDB = 'mongodb://root:password@localhost:27017/users?authSource=admin';
 mongoose.connect(mongoDB, {});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error...'));
