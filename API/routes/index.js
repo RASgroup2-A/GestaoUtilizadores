@@ -97,7 +97,7 @@ router.post('/register', function (req, res) {
                         username: req.user.username, email: req.user.email,
                         sub: 'User registered', id: req.user._id
                     },
-                        "8868c60edc94b3bfadbc4fa1e54f05902b8cd78b0eeb3e7fb67dfec0c86412ce",
+                        process.env.SECRET_KEY,
                         { expiresIn: "1h" },
                         function (e, token) {
                           if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })
@@ -123,7 +123,7 @@ router.post('/login', verifyActiveStatus, passport.authenticate('local'), functi
         sub: 'User logged in',
         id: req.user._id
       },
-      "8868c60edc94b3bfadbc4fa1e54f05902b8cd78b0eeb3e7fb67dfec0c86412ce",
+      process.env.SECRET_KEY,
       { expiresIn: "1h" },
       function (e, token) {
         if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })

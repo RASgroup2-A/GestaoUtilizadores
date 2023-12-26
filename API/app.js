@@ -1,4 +1,5 @@
 // Passport config
+require('dotenv').config();
 var cookieParser = require('cookie-parser');
 var createError = require('http-errors');
 var express = require('express');
@@ -8,7 +9,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var session = require('express-session');
 var User = require('./models/users');
 var usersRouter = require('./routes/index');
-require('dotenv').config();
+
+console.log(process.env)
 
 var mongoose = require('mongoose');
 var mongoDB = 'mongodb://root:password@localhost:27017/users?authSource=admin';
