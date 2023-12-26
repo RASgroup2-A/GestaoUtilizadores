@@ -94,7 +94,7 @@ router.post('/register', function (req, res) {
                 else {
                   passport.authenticate("local")(req, res, () => {
                     jwt.sign({
-                        username: req.user.username, email: req.user.email,
+                        username: req.user.username, email: req.user.email, type:req.user.type,
                         sub: 'User registered', id: req.user._id
                     },
                         process.env.SECRET_KEY,
@@ -119,7 +119,7 @@ router.post('/register', function (req, res) {
  */
 router.post('/login', verifyActiveStatus, passport.authenticate('local'), function (req, res) {
   jwt.sign({
-        username: req.user.username, email: req.user.email,
+        username: req.user.username, email: req.user.email, type: req.user.type,
         sub: 'User logged in',
         id: req.user._id
       },
