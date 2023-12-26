@@ -94,7 +94,7 @@ router.post('/register', function (req, res) {
                 else {
                   passport.authenticate("local")(req, res, () => {
                     jwt.sign({
-                        username: req.user.username, type: req.user.type,
+                        username: req.user.username, email: req.user.email,
                         sub: 'User registered', id: req.user._id
                     },
                         "8868c60edc94b3bfadbc4fa1e54f05902b8cd78b0eeb3e7fb67dfec0c86412ce",
@@ -119,7 +119,7 @@ router.post('/register', function (req, res) {
  */
 router.post('/login', verifyActiveStatus, passport.authenticate('local'), function (req, res) {
   jwt.sign({
-        username: req.user.username, type: req.user.type,
+        username: req.user.username, email: req.user.email,
         sub: 'User logged in',
         id: req.user._id
       },
@@ -173,7 +173,7 @@ router.put('/:email/redefinePassword', function (req, res) {
 /**
  * GET all the students
  */
-router.get('/users/alunos', function(req, res) {
+router.get('/users/alunos', auth.verificaAcesso, function(req, res) {
   users.listAlunos()
     .then(data => res.status(200).json(data))
     .catch(error => res.status(511).json({error: error, message: "Could not retreive the students list"}))
@@ -182,7 +182,7 @@ router.get('/users/alunos', function(req, res) {
 /**
  * GET student given the ID
  */
-router.get('/users/alunos/:id', (req,res) => {
+router.get('/users/alunos/:id', auth.verificaAcesso, (req,res) => {
   users.getAluno(req.params.id)
     .then(data => res.status(200).json(data))
     .catch(error => res.status(521).json({error: error, message: "Could not obtain the student"}))
@@ -191,7 +191,7 @@ router.get('/users/alunos/:id', (req,res) => {
 /**
  * GET the current maximum ID for a student
  */
-router.get('/users/currentIdAluno', (req, res) => {
+router.get('/users/currentIdAluno', auth.verificaAcesso,(req, res) => {
   users.getCurrentIdAluno()
   .then(data => res.status(200).json(data))
   .catch(error => res.status(522).json({error: error, message: "Could not obtain the current id"}))
@@ -200,7 +200,7 @@ router.get('/users/currentIdAluno', (req, res) => {
 /**
  * GET all the teachers
  */
-router.get('/users/docentes', function(req, res) {
+router.get('/users/docentes', auth.verificaAcesso, function(req, res) {
   users.listDocentes()
       .then(data => res.status(200).json(data))
       .catch(error => res.status(511).json({error: error, message: "Could not retreive the students list"}))
@@ -209,7 +209,7 @@ router.get('/users/docentes', function(req, res) {
 /**
  * GET teacher given the ID
  */
-router.get('/users/docentes/:id', (req,res) => {
+router.get('/users/docentes/:id', auth.verificaAcesso, (req,res) => {
   users.getDocente(req.params.id)
       .then(data => res.status(200).json(data))
       .catch(error => res.status(521).json({error: error, message: "Could not obtain the student"}))
@@ -218,7 +218,7 @@ router.get('/users/docentes/:id', (req,res) => {
 /**
  * GET the current maximum ID for a teacher
  */
-router.get('/users/currentIdDocente', (req, res) => {
+router.get('/users/currentIdDocente', auth.verificaAcesso ,(req, res) => {
   users.getCurrentIdDocente()
       .then(data => res.status(200).json(data))
       .catch(error => res.status(522).json({error: error, message: "Could not obtain the current id"}))
@@ -227,7 +227,7 @@ router.get('/users/currentIdDocente', (req, res) => {
 /**
  * GET all the technicians
  */
-router.get('/users/tecnicos', function(req, res) {
+router.get('/users/tecnicos', auth.verificaAcesso, function(req, res) {
   users.listTecnicos()
       .then(data => res.status(200).json(data))
       .catch(error => res.status(511).json({error: error, message: "Could not retreive the students list"}))
@@ -236,7 +236,7 @@ router.get('/users/tecnicos', function(req, res) {
 /**
  * GET teacher given the ID
  */
-router.get('/users/tecnicos/:id', (req,res) => {
+router.get('/users/tecnicos/:id', auth.verificaAcesso, (req,res) => {
   users.getTecnico(req.params.id)
       .then(data => res.status(200).json(data))
       .catch(error => res.status(521).json({error: error, message: "Could not obtain the student"}))
@@ -245,7 +245,7 @@ router.get('/users/tecnicos/:id', (req,res) => {
 /**
  * GET the current maximum ID for a teacher
  */
-router.get('/users/currentIdTecnicos', (req, res) => {
+router.get('/users/currentIdTecnicos', auth.verificaAcesso,(req, res) => {
   users.getCurrentIdTecnico()
       .then(data => res.status(200).json(data))
       .catch(error => res.status(522).json({error: error, message: "Could not obtain the current id"}))
@@ -254,7 +254,7 @@ router.get('/users/currentIdTecnicos', (req, res) => {
 /**
  * POST a student
  */
-router.post('/users/alunos', (req,res) => {
+router.post('/users/alunos', auth.verificaAcesso, (req,res) => {
   users.addAluno(req.body)
     .then(data => res.status(201).json(data))
     .catch(error => res.status(526).json({error: error, message: "Could not insert the student"}))
@@ -263,7 +263,7 @@ router.post('/users/alunos', (req,res) => {
 /**
  * POST a teacher
  */
-router.post('/users/docentes', (req,res) => {
+router.post('/users/docentes', auth.verificaAcesso, (req,res) => {
   users.addDocente(req.body)
       .then(data => res.status(201).json(data))
       .catch(error => res.status(526).json({error: error, message: "Could not insert the teacher"}))
@@ -272,7 +272,7 @@ router.post('/users/docentes', (req,res) => {
 /**
  * POST a technician
  */
-router.post('/users/tecnicos', (req,res) => {
+router.post('/users/tecnicos', auth.verificaAcesso, (req,res) => {
   users.addTecnico(req.body)
       .then(data => res.status(201).json(data))
       .catch(error => res.status(526).json({error: error, message: "Could not insert the technician"}))
@@ -281,7 +281,7 @@ router.post('/users/tecnicos', (req,res) => {
 /**
  * PUT a student
  */
-router.put('/users/alunos/:id', (req,res) => {
+router.put('/users/alunos/:id', auth.verificaAcesso, (req,res) => {
   users.updateAluno(req.body, req.params.id)
     .then(data => res.status(200).json(data))
     .catch(error => res.status(527).json({error: error, message: "Could not update the technician"}))
@@ -291,7 +291,7 @@ router.put('/users/alunos/:id', (req,res) => {
  * PUT a teacher
  */
 
-router.put('/users/docentes/:id', (req,res) => {
+router.put('/users/docentes/:id', auth.verificaAcesso,(req,res) => {
   users.updateDocente(req.body, req.params.id)
       .then(data => res.status(200).json(data))
       .catch(error => res.status(527).json({error: error, message: "Could not update the technician"}))
@@ -301,7 +301,7 @@ router.put('/users/docentes/:id', (req,res) => {
    * PUT a technician
    */
 
-  router.put('/users/tecnicos/:id', (req,res) => {
+  router.put('/users/tecnicos/:id', auth.verificaAcesso ,(req,res) => {
     users.updateTecnico(req.body, req.params.id)
       .then(data => res.status(200).json(data))
       .catch(error => res.status(527).json({error: error, message: "Could not update the technician"}))
@@ -311,7 +311,7 @@ router.put('/users/docentes/:id', (req,res) => {
  * DELETE a student
  */
 
-router.delete('/users/alunos/:id', (req,res) => {
+router.delete('/users/alunos/:id', auth.verificaAcesso, (req,res) => {
   users.deleteAluno(req.params.id)
     .then(data => res.status(200).json(data))
     .catch(error => res.status(528).json({error: error, message: "Could not delete the student"}))
@@ -321,7 +321,7 @@ router.delete('/users/alunos/:id', (req,res) => {
  * DELETE a teacher
  */
 
-router.delete('/users/docentes/:id', (req,res) => {
+router.delete('/users/docentes/:id', auth.verificaAcesso, (req,res) => {
   users.deleteDocente(req.params.id)
       .then(data => res.status(200).json(data))
       .catch(error => res.status(528).json({error: error, message: "Could not delete the teacher"}))
@@ -331,7 +331,7 @@ router.delete('/users/docentes/:id', (req,res) => {
  * DELETE a technician
  */
 
-router.delete('/users/tecnicos/:id', (req,res) => {
+router.delete('/users/tecnicos/:id', auth.verificaAcesso, (req,res) => {
   users.deleteTecnico(req.params.id)
       .then(data => res.status(200).json(data))
       .catch(error => res.status(528).json({error: error, message: "Could not delete the technician"}))
