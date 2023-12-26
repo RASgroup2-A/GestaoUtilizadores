@@ -13,8 +13,10 @@ var usersRouter = require('./routes/index');
 console.log(process.env)
 
 var mongoose = require('mongoose');
-var mongoDB = 'mongodb://root:password@localhost:27017/users?authSource=admin';
-mongoose.connect(mongoDB, {});
+// var mongoDB = 'mongodb://root:password@localhost:27017/users?authSource=admin';
+var mongodb = 'mongodb://127.0.0.1/users';
+
+mongoose.connect(mongodb, {});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error...'));
 db.on('open', function() {
@@ -22,7 +24,7 @@ db.on('open', function() {
 })
 
 // Passport config
-passport.use(new LocalStrategy(User.authenticate()));
+passport.use(new LocalStrategy({usernameField: 'email'}, User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
