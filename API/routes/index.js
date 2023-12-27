@@ -5,7 +5,7 @@ const passport = require('passport')
 
 // Controller to the dbs
 const users = require('../controllers/users.js');
-const usersModel = require('../models/users')
+var usersModel = require('../models/users')
 const auth = require('../../API/auth/auth');
 const { hash } = require("bcrypt");
 
@@ -79,7 +79,6 @@ router.post('/register', function (req, res) {
         res.status(500).jsonp({ error: 'Email already in use' });
 
       } else {
-
         usersModel.register(new usersModel({
           username: req.body.username,
           name: req.body.name,
@@ -88,20 +87,28 @@ router.post('/register', function (req, res) {
           type: req.body.type
         }),
           req.body.password,
-          (err, user) => {
+          async (err, user) => {
             if (err)
               res.jsonp({ error: err, message: "Register error: " + err })
             else {
+              console.log("user:");
+              console.log(user);
+              console.log("req.user:");
+              console.log(req.user);              
+              console.log("req:");
+              console.log(req);              
               passport.authenticate("local")(req, res, () => {
                 jwt.sign({
-                  username: req.user.username, email: req.user.email, type: req.user.type,
+                  username: req.user.username, email: req.user.email, type: req.user.type, name:req.user.name, numMecanografico:req.user.numMecanografico,
                   sub: 'User registered', id: req.user._id
                 },
                   process.env.SECRET_KEY,
                   { expiresIn: "1h" },
                   function (e, token) {
+                    console.log("type>");
+                    console.log(user);
                     if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })
-                    else res.status(201).jsonp({ token: token })
+                    else res.status(201).jsonp({ token: token, "numMecanografico":req.user.numMecanografico,"type":req.user.type})
                   });
               })
             }
@@ -119,20 +126,22 @@ router.post('/register', function (req, res) {
  */
 router.post('/login', (req,res,next) => {console.log(req.body); next()} , passport.authenticate('local'), function (req, res) {
   console.log({
-    username: req.user.username, email: req.user.email, type: req.user.type,
+    email: req.user.email, type: req.user.type, numMecanografico: req.user.numMecanografico,
     sub: 'User logged in',
     id: req.user._id
   })
   jwt.sign({
-    username: req.user.username, email: req.user.email, type: req.user.type,
+    email: req.user.email, type: req.user.type, numMecanografico: req.user.numMecanografico,
     sub: 'User logged in',
     id: req.user._id
   },
     process.env.SECRET_KEY,
     { expiresIn: "1h" },
     function (e, token) {
+      console.log("token")
+      console.log(token)
       if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })
-      else res.status(201).jsonp({ token: token })
+      else res.status(201).jsonp({ "token": token, "numMecanografico":req.user.numMecanografico,"type":req.user.type})
     });
 })
 
