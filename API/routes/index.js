@@ -94,12 +94,12 @@ router.post('/register', function (req, res) {
               console.log("user:");
               console.log(user);
               console.log("req.user:");
-              console.log(req.user);              
+              console.log(req.user);
               console.log("req:");
-              console.log(req);              
+              console.log(req);
               passport.authenticate("local")(req, res, () => {
                 jwt.sign({
-                  username: req.user.username, email: req.user.email, type: req.user.type, name:req.user.name, numMecanografico:req.user.numMecanografico,
+                  email: req.user.email, type: req.user.type, username: req.user.name, numMecanografico: req.user.numMecanografico,
                   sub: 'User registered', id: req.user._id
                 },
                   process.env.SECRET_KEY,
@@ -108,7 +108,7 @@ router.post('/register', function (req, res) {
                     console.log("type>");
                     console.log(user);
                     if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })
-                    else res.status(201).jsonp({ token: token, "numMecanografico":req.user.numMecanografico,"type":req.user.type})
+                    else res.status(201).jsonp({ token: token })
                   });
               })
             }
@@ -124,7 +124,7 @@ router.post('/register', function (req, res) {
 /**
  * POST rota para iniciar sessão na aplicação
  */
-router.post('/login', (req,res,next) => {console.log(req.body); next()} , passport.authenticate('local'), function (req, res) {
+router.post('/login', passport.authenticate('local'), function (req, res) {
   console.log({
     email: req.user.email, type: req.user.type, numMecanografico: req.user.numMecanografico,
     sub: 'User logged in',
@@ -141,7 +141,7 @@ router.post('/login', (req,res,next) => {console.log(req.body); next()} , passpo
       console.log("token")
       console.log(token)
       if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })
-      else res.status(201).jsonp({ "token": token, "numMecanografico":req.user.numMecanografico,"type":req.user.type})
+      else res.status(201).jsonp({ "token": token })
     });
 })
 
