@@ -91,12 +91,6 @@ router.post('/register', function (req, res) {
             if (err)
               res.jsonp({ error: err, message: "Register error: " + err })
             else {
-              console.log("user:");
-              console.log(user);
-              console.log("req.user:");
-              console.log(req.user);
-              console.log("req:");
-              console.log(req);
               passport.authenticate("local")(req, res, () => {
                 jwt.sign({
                   email: req.user.email, type: req.user.type, username: req.user.name, numMecanografico: req.user.numMecanografico,
@@ -105,8 +99,6 @@ router.post('/register', function (req, res) {
                   process.env.SECRET_KEY,
                   { expiresIn: "1h" },
                   function (e, token) {
-                    console.log("type>");
-                    console.log(user);
                     if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })
                     else res.status(201).jsonp({ token: token })
                   });
@@ -138,8 +130,6 @@ router.post('/login', passport.authenticate('local'), function (req, res) {
     process.env.SECRET_KEY,
     { expiresIn: "1h" },
     function (e, token) {
-      console.log("token")
-      console.log(token)
       if (e) res.status(500).jsonp({ error: "Erro na geração do token: " + e })
       else res.status(201).jsonp({ "token": token })
     });
