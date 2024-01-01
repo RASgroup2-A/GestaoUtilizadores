@@ -195,9 +195,9 @@ router.get('/users/alunos/:id', auth.verificaAcesso, (req, res) => {
  * GET verify if the student exists given the ID
  */
 
-router.get('/users/alunos/verify/:id', auth.verificaAcesso, (req, res) => {
-    users.verifyAluno(req.params.id)
-        .then(data => res.status(200).json(data))
+router.get('/users/alunos/verify/:numMecanografico', auth.verificaAcesso, (req, res) => {
+  users.verifyAluno(req.params.numMecanografico)
+        .then(data  => res.status(200).json(data))
         .catch(error => res.status(521).json({ error: error, message: "Could not obtain the student" }))
 })
 

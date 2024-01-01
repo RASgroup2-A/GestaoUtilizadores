@@ -50,16 +50,11 @@ module.exports.getAluno = id => {
  * @returns True if the student exists, false otherwise
  */
 
-module.exports.verifyAluno = id => {
+module.exports.verifyAluno = numAluno => {
     return users
-        .find({_id: id, type: 'A'})
+        .find({numMecanografico: numAluno, type: 'A'})
         .then(resp => {
-            if (resp.length === 0){
-                return false
-            }
-            else{
-                return true
-            }
+            return resp.length !== 0;
         })
         .catch(error => {
             console.log("Controller mongoDB: " + error)
