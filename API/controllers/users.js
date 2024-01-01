@@ -44,6 +44,30 @@ module.exports.getAluno = id => {
 }
 
 /**
+ * Verify if a student exists in the BD given its id
+ * RETRIEVE
+ * @param {*} id - the id of the student
+ * @returns True if the student exists, false otherwise
+ */
+
+module.exports.verifyAluno = id => {
+    return users
+        .find({_id: id, type: 'A'})
+        .then(resp => {
+            if (resp.length === 0){
+                return false
+            }
+            else{
+                return true
+            }
+        })
+        .catch(error => {
+            console.log("Controller mongoDB: " + error)
+            return error
+        })
+}
+
+/**
  * Retrieve all teachers from the BD
  * RETRIEVE
  * @returns The teachers or an error
