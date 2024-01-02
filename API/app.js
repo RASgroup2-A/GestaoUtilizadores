@@ -16,7 +16,7 @@ var mongoose = require('mongoose');
 //var mongodb = 'mongodb://root:password@localhost:27017/users?authSource=admin';
 var mongodb = 'mongodb://127.0.0.1/users';
 
-mongoose.connect(mongodb, {});
+mongoose.connect(mongodb,{});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error...'));
 db.on('open', function() {
