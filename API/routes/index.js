@@ -81,7 +81,6 @@ router.post('/register', function (req, res) {
       } else {
         usersModel.register(new usersModel({
           username: req.body.username,
-          name: req.body.name,
           numMecanografico: req.body.numMecanografico,
           email: req.body.email,
           type: req.body.type

@@ -13,7 +13,7 @@ var usersRouter = require('./routes/index');
 console.log(process.env)
 
 var mongoose = require('mongoose');
-// var mongoDB = 'mongodb://root:password@localhost:27017/users?authSource=admin';
+//var mongodb = 'mongodb://root:password@localhost:27017/users?authSource=admin';
 var mongodb = 'mongodb://127.0.0.1/users';
 
 mongoose.connect(mongodb, {});
