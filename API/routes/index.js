@@ -69,6 +69,18 @@ function verifyActiveStatus(req, res, next) {
 }
 
 /**
+ * POST que verifica se uma lista de números mecanográficos de alunos é válida (todos os alunos da lista existem na BD)
+ */
+router.post('/alunos/verify', function (req,res,next) {
+  let numsMecanograficos = req.body.alunos
+  console.log("filhos da puta")
+  console.log(numsMecanograficos)
+  users.checkAlunosList(numsMecanograficos)
+    .then(data => res.jsonp(data))
+    .catch(error => res.status(526).json({ error: error, message: error }))
+})
+
+/**
  * POST rota para registar um utilizador à base de dados
  */
 router.post('/register', function (req, res) {

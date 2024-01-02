@@ -11,6 +11,6 @@ var usersSchema = new mongoose.Schema({
     type: String
 }, {versionKey : false});
 
-usersSchema.plugin(passportLocalMongoose);
+usersSchema.plugin(passportLocalMongoose, {usernameField: 'email'}); //! NÃO MEXER NESTA LINHA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 module.exports  = mongoose.model('users', usersSchema)
