@@ -9,23 +9,6 @@ var users = require('../models/users.js')
 // var Algolia = require('./algolia.js')
 
 /**
- * Retrieve all students from the BD
- * RETRIEVE
- * @returns The students or an error
- */
-module.exports.listAlunos = () => {
-  return users
-          .find({type: 'A'}) // No filters
-          .then(resp => {
-            return resp
-          })
-          .catch(error => {
-            console.log("Controller mongoDB: " + error)
-            return error
-          })
-}
-
-/**
  * Retrieve a student from the BD given its id
  * RETRIEVE
  * @param {*} id - the id of the student
@@ -52,13 +35,13 @@ module.exports.getAluno = id => {
 
 module.exports.verifyAluno = numAluno => {
     return users
-        .find({numMecanografico: numAluno, type: 'A'})
+        .findOne({numMecanografico: numAluno, type: 'A'})
         .then(resp => {
-            return resp.length !== 0;
-        })
-        .catch(error => {
-            console.log("Controller mongoDB: " + error)
-            return error
+            if (resp) {
+                return true
+            } else {
+                return false
+            }
         })
 }
 
@@ -96,25 +79,6 @@ module.exports.getDocente = id => {
             return error
         })
 }
-
-/**
- * Retrieve all technicians from the BD
- * RETRIEVE
- * @returns The technicians or an error
- */
-module.exports.listTecnicos = () => {
-    return users
-        .find({type: 'T'})
-        .then(resp => {
-            return resp
-        })
-        .catch(error => {
-            console.log("Controller mongoDB: " + error)
-            return error
-        })
-}
-
-
 
 /**
  * Retrieve a technician from the BD given its id
