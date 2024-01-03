@@ -243,6 +243,15 @@ module.exports.getUser = id => {
         })
 }
 
+module.exports.checkAlunosList = async numsMecanograficos => {
+    let resultado = await users.collection.find({
+        numMecanografico: {$in: numsMecanograficos},
+        type: {$in: ['A','Aluno']}
+    }).toArray()
+
+    return {result: resultado.length == numsMecanograficos.length}
+}
+
 /**
  * Update a student in the database
  * UPDATE
