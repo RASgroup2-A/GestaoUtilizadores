@@ -13,10 +13,11 @@ var usersRouter = require('./routes/index');
 console.log(process.env)
 
 var mongoose = require('mongoose');
-var mongodb = 'mongodb://root:password@localhost:27017/users?authSource=admin';
+//var mongodb = 'mongodb://root:password@localhost:27017/users?authSource=admin';
 //var mongodb = 'mongodb://127.0.0.1/users';
-
-mongoose.connect(mongodb,{});
+//mongoose.connect(mongodb,{});
+var mongodb = process.env.MONGODB_URL || `mongodb://127.0.0.1/${process.env.DATABASE}`; //! MONGODB_URL definida no docker-compose
+mongoose.connect(mongodb, { useNewUrlParser: true, useUnifiedTopology: true })
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error...'));
 db.on('open', function() {
