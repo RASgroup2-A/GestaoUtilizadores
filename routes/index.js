@@ -169,7 +169,6 @@ router.get('/currentIdAluno', (req, res) => {
  */
 router.post('/alunos/verify', function (req,res,next) {
   let numsMecanograficos = req.body.alunos
-  console.log("filhos da puta")
   console.log(numsMecanograficos)
   users.checkAlunosList(numsMecanograficos)
       .then(data => res.jsonp(data))
