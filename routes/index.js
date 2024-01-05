@@ -52,7 +52,7 @@ function paginatedResults(model) {
   }
 }
 
-function verifyActiveStatus(req, res, next) {
+/*function verifyActiveStatus(req, res, next) {
   usersModel.findOne({ email: req.body.email })
     .then(response => {
       if (response.active === false) {
@@ -66,7 +66,7 @@ function verifyActiveStatus(req, res, next) {
       res.status(500).jsonp({ error: err, message: "Login error: " + err })
     })
 
-}
+}*/
 
 /**
  * POST rota para registar um utilizador à base de dados
@@ -146,7 +146,7 @@ router.get('/:id', function (req, res) {
 })
 
 /**
- * GET verify if the student exists given the ID
+ * GET verify if the student exists given the Mecanopgrahic number
  */
 
 router.get('/alunos/:numMecanografico', (req, res) => {
@@ -165,7 +165,7 @@ router.get('/currentIdAluno', (req, res) => {
 });
 
 /**
- * POST que verifica se uma lista de números mecanográficos de alunos é válida (todos os alunos da lista existem na BD)
+ * POST which checks whether a list of student mechanographic numbers is valid (all students on the list exist in the DB)
  */
 router.post('/alunos/verify', function (req,res,next) {
   let numsMecanograficos = req.body.alunos
