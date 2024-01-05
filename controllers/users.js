@@ -233,6 +233,10 @@ module.exports.addTecnico = tecnico => {
         })
 }
 
+/**
+ * Retrieve a user from the BD
+ */
+
 module.exports.getUser = id => {
     return users.findOne({ _id: id })
         .then(resposta => {
@@ -242,6 +246,10 @@ module.exports.getUser = id => {
             return erro
         })
 }
+
+/**
+ * Check if a list of students exists in the BD
+ */
 
 module.exports.checkAlunosList = async numsMecanograficos => {
     let resultado = await users.collection.find({
@@ -375,6 +383,10 @@ module.exports.deleteTecnico = id => {
         })
 }
 
+/**
+ * Delete a user from the database
+ */
+
 module.exports.deleteUser = id => {
     return users.deleteOne({ _id: id })
         .then(resposta => {
@@ -425,12 +437,3 @@ module.exports.changePassword = (email, newPassword) => {
         })
 
 };
-
-module.exports.checkAlunosList = async numsMecanograficos => {
-    let resultado = await users.collection.find({
-        numMecanografico: {$in: numsMecanograficos},
-        type: {$in: ['A','Aluno']}
-    }).toArray()
-
-    return {result: resultado.length == numsMecanograficos.length}
-}

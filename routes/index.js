@@ -69,7 +69,7 @@ function paginatedResults(model) {
 }*/
 
 /**
- * POST rota para registar um utilizador à base de dados
+ * POST route to register a user
  */
 router.post('/register', function (req, res) {
   var d = new Date().toISOString().substring(0, 19)
@@ -113,7 +113,7 @@ router.post('/register', function (req, res) {
 })
 
 /**
- * POST rota para iniciar sessão na aplicação
+ * POST route to login a user
  */
 router.post('/login', passport.authenticate('local'), function (req, res) {
   console.log({
